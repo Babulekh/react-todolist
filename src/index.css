@@ -1,13 +1,56 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.App {
+    max-width: 100%;
+    width: 600px;
+    padding-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px auto;
+}
+
+.todoControls {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.todoControl {
+    height: 25%;
+    padding-left: 25px;
+    border-radius: 6px;
+    border: 1px solid rgb(153, 153, 153);
+    font-size: 20px;
+}
+
+.todoControl:active, .todoControl:hover, .todoControl:focus-visible {
+    border: 2px solid rgb(114, 114, 114);
+}
+
+.todoList {
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+}
+
+.todoName {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.todoText {
+    padding-left: 25px;
 }
