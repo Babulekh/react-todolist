@@ -1,61 +1,84 @@
-import react from "react";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-function TodoName() {
-    return <input className="todoName todoControl" type="text" name="todoName" />;
-}
-
-function TodoText() {
-    return <input className="todoText todoControl" type="text" name="todoText" />;
-}
-
-function TodoAddBtn() {
-    return <input className="todoAddBtn todoControl" type="button" name="todoAddBtn" value="Add todo" />;
-}
-
-class TodoList extends React.Component {
+class Controls extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            todoList: [{ Name: "Name", Text: "Text" }],
+            todoName: "",
+            todoText: "",
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    renderTodoList() {
-        let todoList = [];
+    handleSubmit() {
+        if (!this.state.todoName) return;
+        this.props.onClick(this.state.todoName, this.state.todoText);
+        this.setState({
+            todoName: "",
+            todoText: "",
+        });
+    }
 
-        for (let i = 0; i < this.state.todoList.length; i++) {
-            todoList.push(
-                <div className="todo" key={i}>
-                    <p className="todoName">{this.state.todoList[i].Name}</p>
-                    <p className="todoText">{this.state.todoList[i].Text}</p>
-                </div>
-            );
-        }
-
-        return todoList;
+    handleChange({ target }) {
+        const [name, value] = [target.name, target.value];
+        this.setState({ [name]: value });
     }
 
     render() {
-        this.state.todoList.push({ Name: "Name1", Text: "Text1" });
-
-        return this.renderTodoList();
+        return (
+            <div className="todoControls">
+                <input className="todoName todoControl" type="text" name="todoName" onChange={this.handleChange} value={this.state.todoName} />
+                <input className="todoText todoControl" type="text" name="todoText" onChange={this.handleChange} value={this.state.todoText} />
+                <button className="todoAddBtn todoControl" type="button" name="todoAddBtn" onClick={this.handleSubmit}>
+                    Add todo
+                </button>
+            </div>
+        );
     }
 }
 
-ReactDOM.render(
-    <div className="App">
-        <div className="todoControls">
-            <TodoName />
-            <TodoText />
-            <TodoAddBtn />
-        </div>
-        <div className="todoList">
-            <TodoList />
-        </div>
-    </div>,
-    document.getElementById("root")
-);
+class List extends React.Component {
+    render() {
+        return (
+            <div className="todoList">
+                {this.props.todoList.map((todo, index) => (
+                    <div className="todo" key={index}>
+                        <p className="todoName">{todo.name}</p>
+                        <p className="todoText">{todo.text}</p>
+                    </div>
+                ))}
+            </div>
+        );
+    }
+}
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            todoList: [],
+        };
+        this.addTodo = this.addTodo.bind(this);
+    }
+
+    addTodo(name, text) {
+        const todoList = this.state.todoList.slice();
+        this.setState({ todoList: todoList.concat([{ name: name, text: text }]) });
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Controls onClick={this.addTodo} />
+                <List todoList={this.state.todoList} />
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
